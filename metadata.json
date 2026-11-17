@@ -1,0 +1,6 @@
+{
+  "name": "KROWD — Bengaluru City Intelligence",
+  "description": "Know the crowd. Plan better. Real-time crowd intelligence, weather, traffic insights, and 7-day visit predictions for Bengaluru.",
+  "requestFramePermissions": ["geolocation"],
+  "majorCapabilities": []
+}
