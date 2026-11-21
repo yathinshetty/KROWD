@@ -5,7 +5,6 @@ import {
   ChevronUp,
   Compass,
   LocateFixed,
-  MapPin,
   Navigation2,
   TrendingUp,
 } from 'lucide-react';
@@ -206,10 +205,10 @@ export default function App() {
 
   return (
     <div className="h-screen w-screen overflow-hidden flex flex-col bg-[#E6F4D7] text-[#1A211C]">
-      {/* Desktop Top Navigation (Clean 3-Zone Contract) */}
+      {/* Desktop Top Navigation */}
       <header className="hidden md:flex items-center justify-between gap-8 px-6 h-16 bg-white/95 backdrop-blur-md border-b border-[#D1E7BD] z-40 shrink-0">
-        {/* Zone 1: Brand & City Context */}
-        <div className="flex items-center gap-4 shrink-0">
+        {/* Zone 1: Brand */}
+        <div className="flex items-center shrink-0">
           <button
             type="button"
             onClick={() => {
@@ -223,11 +222,6 @@ export default function App() {
               KROWD
             </span>
           </button>
-          <span className="h-4 w-px bg-[#D1E7BD]" aria-hidden="true" />
-          <span className="inline-flex items-center gap-1.5 font-sans font-normal text-[13px] leading-[1.3] tracking-[0em] text-[#627065] whitespace-nowrap shrink-0">
-            <MapPin className="w-3.5 h-3.5 text-[#4ADE80]" aria-hidden="true" />
-            <span>South Karnataka</span>
-          </span>
         </div>
 
         {/* Zone 2: Primary Navigation Tabs */}
@@ -300,74 +294,74 @@ export default function App() {
 
       {/* Main Content Area */}
       <main className="relative flex-1 min-h-0 overflow-hidden">
+        <div
+          data-active={activeTab === 'explore'}
+          aria-hidden={activeTab !== 'explore'}
+          className="krowd-tab-panel"
+        >
           <div
-            data-active={activeTab === 'explore'}
-            aria-hidden={activeTab !== 'explore'}
-            className="krowd-tab-panel"
+            className={`relative w-full h-full will-change-transform transition-transform duration-[180ms] ease-[cubic-bezier(0.22,1,0.36,1)] ${
+              activeTab === 'explore' ? 'translate-y-0' : 'translate-y-1.5'
+            }`}
           >
-            <div
-              className={`relative w-full h-full will-change-transform transition-transform duration-[180ms] ease-[cubic-bezier(0.22,1,0.36,1)] ${
-                activeTab === 'explore' ? 'translate-y-0' : 'translate-y-1.5'
-              }`}
-            >
-              {/* Full Interactive MapLibre Map */}
-              <BengaluruMap
-                places={filteredPlaces}
-                selectedPlaceId={selectedPlaceId}
-                onSelectPlace={handleSelectPlace}
-                userCoords={userCoords}
-                onRequestLocation={requestLocation}
-                flyToCoords={flyToCoords}
-                onViewportChange={handleViewportChange}
-              />
+            {/* Full Interactive MapLibre Map */}
+            <BengaluruMap
+              places={filteredPlaces}
+              selectedPlaceId={selectedPlaceId}
+              onSelectPlace={handleSelectPlace}
+              userCoords={userCoords}
+              onRequestLocation={requestLocation}
+              flyToCoords={flyToCoords}
+              onViewportChange={handleViewportChange}
+            />
 
-              {/* Floating Top Search & Category Filter Overlay */}
-              <div className="absolute top-3 left-0 right-0 md:top-4 md:left-4 md:right-auto md:w-[540px] lg:w-[600px] z-20 space-y-2.5 pointer-events-none">
-                {/* Mobile Top Compact Brand + Search Row */}
-                <div className="flex items-center gap-2 pointer-events-auto pl-4 pr-3 md:px-0">
-                  <div className="md:hidden px-3 py-2.5 rounded-2xl bg-white/95 backdrop-blur-md border border-[#D1E7BD] shadow-[0_10px_30px_rgba(40,60,30,0.08)] flex items-center gap-2 shrink-0">
-                    <LogoMark size="sm" />
-                    <span className="font-display font-extrabold text-[16px] leading-none tracking-[-0.03em] text-[#1A211C]">
-                      KROWD
-                    </span>
-                  </div>
-
-                  <div className="flex-1 min-w-0">
-                    <SearchBar
-                      places={places}
-                      searchQuery={searchQuery}
-                      onSearchChange={setSearchQuery}
-                      onSelectPlace={(p) => {
-                        handleSelectPlace(p.id);
-                        setFlyToCoords({lat: p.latitude, lon: p.longitude, zoom: 14});
-                      }}
-                      onSelectCategory={(cat) => toggleCategory(cat)}
-                      recentSearches={recentSearches}
-                      onAddRecentSearch={addSearch}
-                      onClearRecentSearches={clearSearches}
-                      compact
-                    />
-                  </div>
+            {/* Floating Top Search & Category Filter Overlay */}
+            <div className="absolute top-3 left-0 right-0 md:top-4 md:left-4 md:right-auto md:w-[540px] lg:w-[600px] z-20 space-y-2.5 pointer-events-none">
+              {/* Mobile Top Compact Brand + Search Row */}
+              <div className="flex items-center gap-2 pointer-events-auto pl-4 pr-3 md:px-0">
+                <div className="md:hidden px-3 py-2.5 rounded-2xl bg-white/95 backdrop-blur-md border border-[#D1E7BD] shadow-[0_10px_30px_rgba(40,60,30,0.08)] flex items-center gap-2 shrink-0">
+                  <LogoMark size="sm" />
+                  <span className="font-display font-extrabold text-[16px] leading-none tracking-[-0.03em] text-[#1A211C]">
+                    KROWD
+                  </span>
                 </div>
 
-                {/* Category Filters */}
-                <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar touch-pan-x pointer-events-auto pb-1 pl-4 pr-8 md:-ml-4 md:pl-4 [mask-image:linear-gradient(to_right,transparent_0px,black_16px,black_calc(100%-32px),transparent_100%)] [-webkit-mask-image:linear-gradient(to_right,transparent_0px,black_16px,black_calc(100%-32px),transparent_100%)]">
-                  {ALL_CATEGORIES.map((cat) => {
-                    const isActive =
-                      cat === 'All'
-                        ? selectedCategories.length === 0
-                        : selectedCategories.includes(cat);
-                    return (
-                      <button
-                        key={cat}
-                        type="button"
-                        onClick={() => toggleCategory(cat)}
-                        className={`inline-flex items-center gap-1.5 px-3 py-2 rounded-xl font-sans font-semibold text-[13px] leading-[1.2] tracking-[-0.005em] whitespace-nowrap shrink-0 transition-[transform,background-color,color,border-color] duration-150 ease-out active:scale-[0.97] will-change-transform shadow-[0_10px_30px_rgba(40,60,30,0.08)] min-h-[36px] ${
-                          isActive
-                            ? 'bg-[#121814] text-white border border-[#121814]'
-                            : 'bg-white text-[#627065] border border-[#D1E7BD] hover:bg-[#E6F4D7] hover:text-[#1A211C]'
-                        }`}
-                      >
+                <div className="flex-1 min-w-0">
+                  <SearchBar
+                    places={places}
+                    searchQuery={searchQuery}
+                    onSearchChange={setSearchQuery}
+                    onSelectPlace={(p) => {
+                      handleSelectPlace(p.id);
+                      setFlyToCoords({lat: p.latitude, lon: p.longitude, zoom: 14});
+                    }}
+                    onSelectCategory={(cat) => toggleCategory(cat)}
+                    recentSearches={recentSearches}
+                    onAddRecentSearch={addSearch}
+                    onClearRecentSearches={clearSearches}
+                    compact
+                  />
+                </div>
+              </div>
+
+              {/* Category Filters */}
+              <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar touch-pan-x pointer-events-auto pb-1 pl-4 pr-8 md:-ml-4 md:pl-4 [mask-image:linear-gradient(to_right,transparent_0px,black_16px,black_calc(100%-32px),transparent_100%)] [-webkit-mask-image:linear-gradient(to_right,transparent_0px,black_16px,black_calc(100%-32px),transparent_100%)]">
+                {ALL_CATEGORIES.map((cat) => {
+                  const isActive =
+                    cat === 'All'
+                      ? selectedCategories.length === 0
+                      : selectedCategories.includes(cat);
+                  return (
+                    <button
+                      key={cat}
+                      type="button"
+                      onClick={() => toggleCategory(cat)}
+                      className={`inline-flex items-center gap-1.5 px-3 py-2 rounded-xl font-sans font-semibold text-[13px] leading-[1.2] tracking-[-0.005em] whitespace-nowrap shrink-0 transition-[transform,background-color,color,border-color] duration-150 ease-out active:scale-[0.97] will-change-transform shadow-[0_10px_30px_rgba(40,60,30,0.08)] min-h-[36px] ${
+                        isActive
+                          ? 'bg-[#121814] text-white border border-[#121814]'
+                          : 'bg-white text-[#627065] border border-[#D1E7BD] hover:bg-[#E6F4D7] hover:text-[#1A211C]'
+                      }`}
+                    >
                       {cat !== 'All' && (
                         <CategoryIcon category={cat} className="w-3.5 h-3.5 shrink-0" />
                       )}
@@ -518,8 +512,8 @@ export default function App() {
                 />
               )}
             </MobileBottomSheet>
-            </div>
           </div>
+        </div>
 
         <div
           data-active={activeTab === 'nearby'}
