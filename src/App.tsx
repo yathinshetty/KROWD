@@ -8,6 +8,7 @@ import {
   Navigation2,
   TrendingUp,
 } from 'lucide-react';
+import {Analytics} from '@vercel/analytics/react';
 import type {
   PlaceCategory,
   PlaceIntelligence,
@@ -587,6 +588,7 @@ export default function App() {
       </nav>
 
       <OfflineBanner />
+      <Analytics />
     </div>
   );
 }
